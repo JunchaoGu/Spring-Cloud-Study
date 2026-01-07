@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: dubbo-web
+
+# 添加日志配置，便于调试 Zookeeper 连接问题
+logging:
+  level:
+    org.apache.dubbo: DEBUG
+    org.apache.curator: DEBUG
+    org.apache.zookeeper: INFO
+    root: INFO
+
+dubbo:
+  application:
+    name: dubbo-web
+  registry:
+    # 使用 Zookeeper 集群作为注册中心，配置所有节点地址
+    # 格式：zookeeper://节点1:端口,节点2:端口,节点3:端口
+    address: zookeeper://192.168.10.102:2181,192.168.10.103:2181,192.168.10.104:2181
+    # 添加超时配置（单位：毫秒），集群模式建议增加超时时间
+    timeout: 10000
+    session-timeout: 15000
+  consumer:
+    check: false
+    serialization: fastjson2     # 明确指定序列化方式
+    prefer-serialization: fastjson2

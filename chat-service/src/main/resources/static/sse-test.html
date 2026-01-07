@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE 学习测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            color: #666;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .stop-btn {
+            background-color: #f44336;
+        }
+        .stop-btn:hover {
+            background-color: #da190b;
+        }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 300px;
+        }
+        .output {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status.connecting {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .info {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 SSE (Server-Sent Events) 学习测试页面</h1>
+
+    <!-- 说明 -->
+    <div class="container">
+        <div class="info">
+            <strong>📖 什么是 SSE？</strong><br>
+            SSE 是一种服务器向客户端推送数据的技术。就像订阅了一个频道，服务器会主动给你推送消息。
+            <br><br>
+            <strong>💡 如何使用？</strong><br>
+            1. 点击下面的按钮开始测试<br>
+            2. 观察"输出区域"中接收到的消息<br>
+            3. 点击"停止连接"按钮可以断开连接
+        </div>
+    </div>
+
+    <!-- 示例1：最简单的 SSE -->
+    <div class="container">
+        <h2>示例1：最简单的 SSE 连接</h2>
+        <p>功能：发送3条简单的文本消息</p>
+        <button onclick="testSimple()">开始测试</button>
+        <button class="stop-btn" onclick="stopConnection('simple')">停止连接</button>
+        <div id="status-simple" class="status disconnected">未连接</div>
+        <div id="output-simple" class="output">等待开始...</div>
+    </div>
+
+    <!-- 示例2：流式发送 -->
+    <div class="container">
+        <h2>示例2：流式发送消息（打字效果）</h2>
+        <p>功能：将文本逐字发送，就像打字一样</p>
+        <input type="text" id="stream-text" placeholder="输入要发送的文本" value="你好，这是流式发送测试！">
+        <button onclick="testStream()">开始测试</button>
+        <button class="stop-btn" onclick="stopConnection('stream')">停止连接</button>
+        <div id="status-stream" class="status disconnected">未连接</div>
+        <div id="output-stream" class="output">等待开始...</div>
+    </div>
+
+    <!-- 示例3：定时发送 -->
+    <div class="container">
+        <h2>示例3：定时发送消息（实时数据更新）</h2>
+        <p>功能：每隔1秒发送一条消息，模拟实时数据更新</p>
+        <input type="number" id="timer-count" placeholder="消息数量" value="10" min="1" max="50">
+        <button onclick="testTimer()">开始测试</button>
+        <button class="stop-btn" onclick="stopConnection('timer')">停止连接</button>
+        <div id="status-timer" class="status disconnected">未连接</div>
+        <div id="output-timer" class="output">等待开始...</div>
+    </div>
+
+    <!-- 示例4：JSON 数据 -->
+    <div class="container">
+        <h2>示例4：发送 JSON 格式的数据</h2>
+        <p>功能：发送 JSON 格式的消息（实际项目中常用）</p>
+        <button onclick="testJson()">开始测试</button>
+        <button class="stop-btn" onclick="stopConnection('json')">停止连接</button>
+        <div id="status-json" class="status disconnected">未连接</div>
+        <div id="output-json" class="output">等待开始...</div>
+    </div>
+
+    <!-- 示例5：模拟聊天 -->
+    <div class="container">
+        <h2>示例5：模拟聊天场景</h2>
+        <p>功能：模拟 AI 回答问题的场景，逐字返回答案</p>
+        <input type="text" id="chat-question" placeholder="输入你的问题" value="什么是Java">
+        <button onclick="testChat()">开始测试</button>
+        <button class="stop-btn" onclick="stopConnection('chat')">停止连接</button>
+        <div id="status-chat" class="status disconnected">未连接</div>
+        <div id="output-chat" class="output">等待开始...</div>
+    </div>
+
+    <script>
+        // 存储所有的 EventSource 连接
+        const connections = {};
+
+        // 更新状态显示
+        function updateStatus(type, status, message) {
+            const statusEl = document.getElementById(`status-${type}`);
+            statusEl.className = `status ${status}`;
+            statusEl.textContent = message;
+        }
+
+        // 添加输出内容
+        function addOutput(type, message) {
+            const outputEl = document.getElementById(`output-${type}`);
+            const time = new Date().toLocaleTimeString();
+            outputEl.textContent += `[${time}] ${message}\n`;
+            outputEl.scrollTop = outputEl.scrollHeight; // 自动滚动到底部
+        }
+
+        // 停止连接
+        function stopConnection(type) {
+            if (connections[type]) {
+                connections[type].close();
+                delete connections[type];
+                updateStatus(type, 'disconnected', '已断开连接');
+                addOutput(type, '❌ 连接已关闭');
+            }
+        }
+
+        // 示例1：最简单的 SSE
+        function testSimple() {
+            stopConnection('simple');
+            updateStatus('simple', 'connecting', '正在连接...');
+            addOutput('simple', '🔗 开始建立连接...');
+
+            const eventSource = new EventSource('/api/learn/sse/simple');
+            connections['simple'] = eventSource;
+
+            eventSource.onopen = function() {
+                updateStatus('simple', 'connected', '✅ 已连接');
+                addOutput('simple', '✅ 连接成功！');
+            };
+
+            eventSource.addEventListener('greeting', function(e) {
+                addOutput('simple', `📨 [greeting] ${e.data}`);
+            });
+
+            eventSource.addEventListener('message', function(e) {
+                addOutput('simple', `📨 [message] ${e.data}`);
+            });
+
+            eventSource.onerror = function(e) {
+                updateStatus('simple', 'disconnected', '❌ 连接错误');
+                addOutput('simple', '❌ 连接出错或已关闭');
+                eventSource.close();
+            };
+        }
+
+        // 示例2：流式发送
+        function testStream() {
+            stopConnection('stream');
+            const text = document.getElementById('stream-text').value || 'Hello, SSE!';
+            updateStatus('stream', 'connecting', '正在连接...');
+            addOutput('stream', '🔗 开始建立连接...');
+
+            const eventSource = new EventSource(`/api/learn/sse/stream?text=${encodeURIComponent(text)}`);
+            connections['stream'] = eventSource;
+
+            eventSource.onopen = function() {
+                updateStatus('stream', 'connected', '✅ 已连接');
+                addOutput('stream', '✅ 连接成功！开始接收数据...\n');
+            };
+
+            eventSource.addEventListener('chunk', function(e) {
+                // 追加字符，不换行（模拟打字效果）
+                const outputEl = document.getElementById('output-stream');
+                outputEl.textContent += e.data;
+                outputEl.scrollTop = outputEl.scrollHeight;
+            });
+
+            eventSource.addEventListener('end', function(e) {
+                addOutput('stream', `\n\n${e.data}`);
+            });
+
+            eventSource.onerror = function(e) {
+                updateStatus('stream', 'disconnected', '❌ 连接错误');
+                addOutput('stream', '\n\n❌ 连接出错或已关闭');
+                eventSource.close();
+            };
+        }
+
+        // 示例3：定时发送
+        function testTimer() {
+            stopConnection('timer');
+            const count = document.getElementById('timer-count').value || 10;
+            updateStatus('timer', 'connecting', '正在连接...');
+            addOutput('timer', '🔗 开始建立连接...');
+
+            const eventSource = new EventSource(`/api/learn/sse/timer?count=${count}`);
+            connections['timer'] = eventSource;
+
+            eventSource.onopen = function() {
+                updateStatus('timer', 'connected', '✅ 已连接');
+                addOutput('timer', '✅ 连接成功！开始接收实时数据...\n');
+            };
+
+            eventSource.addEventListener('update', function(e) {
+                addOutput('timer', `📊 ${e.data}`);
+            });
+
+            eventSource.addEventListener('end', function(e) {
+                addOutput('timer', `\n${e.data}`);
+            });
+
+            eventSource.onerror = function(e) {
+                updateStatus('timer', 'disconnected', '❌ 连接错误');
+                addOutput('timer', '\n❌ 连接出错或已关闭');
+                eventSource.close();
+            };
+        }
+
+        // 示例4：JSON 数据
+        function testJson() {
+            stopConnection('json');
+            updateStatus('json', 'connecting', '正在连接...');
+            addOutput('json', '🔗 开始建立连接...');
+
+            const eventSource = new EventSource('/api/learn/sse/json');
+            connections['json'] = eventSource;
+
+            eventSource.onopen = function() {
+                updateStatus('json', 'connected', '✅ 已连接');
+                addOutput('json', '✅ 连接成功！开始接收 JSON 数据...\n');
+            };
+
+            eventSource.addEventListener('message', function(e) {
+                try {
+                    const json = JSON.parse(e.data);
+                    addOutput('json', `📨 JSON: ${JSON.stringify(json, null, 2)}`);
+                } catch (err) {
+                    addOutput('json', `📨 ${e.data}`);
+                }
+            });
+
+            eventSource.addEventListener('end', function(e) {
+                try {
+                    const json = JSON.parse(e.data);
+                    addOutput('json', `\n✅ ${JSON.stringify(json, null, 2)}`);
+                } catch (err) {
+                    addOutput('json', `\n✅ ${e.data}`);
+                }
+            });
+
+            eventSource.onerror = function(e) {
+                updateStatus('json', 'disconnected', '❌ 连接错误');
+                addOutput('json', '\n❌ 连接出错或已关闭');
+                eventSource.close();
+            };
+        }
+
+        // 示例5：模拟聊天
+        function testChat() {
+            stopConnection('chat');
+            const question = document.getElementById('chat-question').value || '你好';
+            updateStatus('chat', 'connecting', '正在连接...');
+            addOutput('chat', '🔗 开始建立连接...');
+
+            const eventSource = new EventSource(`/api/learn/sse/chat?question=${encodeURIComponent(question)}`);
+            connections['chat'] = eventSource;
+
+            eventSource.onopen = function() {
+                updateStatus('chat', 'connected', '✅ 已连接');
+                addOutput('chat', `✅ 连接成功！\n👤 你的问题：${question}\n🤖 AI 回答：\n`);
+            };
+
+            eventSource.addEventListener('chunk', function(e) {
+                // 追加字符，不换行（模拟打字效果）
+                const outputEl = document.getElementById('output-chat');
+                outputEl.textContent += e.data;
+                outputEl.scrollTop = outputEl.scrollHeight;
+            });
+
+            eventSource.addEventListener('end', function(e) {
+                addOutput('chat', `\n\n${e.data}`);
+            });
+
+            eventSource.onerror = function(e) {
+                updateStatus('chat', 'disconnected', '❌ 连接错误');
+                addOutput('chat', '\n\n❌ 连接出错或已关闭');
+                eventSource.close();
+            };
+        }
+
+        // 页面卸载时关闭所有连接
+        window.addEventListener('beforeunload', function() {
+            for (let type in connections) {
+                connections[type].close();
+            }
+        });
+    </script>
+</body>
+</html>
+

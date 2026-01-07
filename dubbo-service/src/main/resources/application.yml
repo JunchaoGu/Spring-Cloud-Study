@@ -1,0 +1,35 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: dubbo-service          # Spring Boot 应用名
+
+# 添加日志配置，便于调试 Zookeeper 连接问题
+logging:
+  level:
+    org.apache.dubbo: DEBUG
+    org.apache.curator: DEBUG
+    org.apache.zookeeper: INFO
+    root: INFO
+
+dubbo:
+  application:
+    name: dubbo-service          # Dubbo 应用名（可以和上面一样）
+  registry:
+    # 使用 Zookeeper 集群作为注册中心，配置所有节点地址
+    # 格式：zookeeper://节点1:端口,节点2:端口,节点3:端口
+    address: zookeeper://192.168.10.102:2181,192.168.10.103:2181,192.168.10.104:2181
+    # 添加超时配置（单位：毫秒），集群模式建议增加超时时间
+    timeout: 10000
+    session-timeout: 15000
+  protocol:
+    name: dubbo                  # Dubbo RPC 协议
+    port: 20880                  # Dubbo 对外暴露的端口
+    serialization: fastjson2     # 更改序列化方式为 fastjson2，避免 Java 17 模块访问限制
+  provider:
+    serialization: fastjson2     # 明确指定序列化方式
+    prefer-serialization: fastjson2
+  scan:
+    # 这里写你 @DubboService 实现类所在的包
+    base-packages: com.xidian.dubboservice.service.impl

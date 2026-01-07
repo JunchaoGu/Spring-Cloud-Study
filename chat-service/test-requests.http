@@ -1,0 +1,165 @@
+### ============================================
+### Controller 注解学习 - HTTP 测试文件
+### ============================================
+### 使用方法：
+### 1. 确保应用已启动（http://localhost:6001）
+### 2. 在 IntelliJ IDEA 中打开此文件
+### 3. 点击每个请求上方的绿色箭头运行
+### 4. 查看响应结果，理解每个注解的作用
+### ============================================
+
+### 第一部分：@GetMapping 注解学习
+
+### 示例 1：最简单的 GET 请求
+### 学习要点：@GetMapping 基础用法
+GET http://localhost:6001/api/learn/annotations/hello
+
+### 示例 2：@PathVariable 获取路径变量
+### 学习要点：从 URL 路径中提取变量
+GET http://localhost:6001/api/learn/annotations/user/123
+
+### 示例 3：多个路径变量
+### 学习要点：一个方法可以有多个 @PathVariable
+GET http://localhost:6001/api/learn/annotations/user/123/order/456
+
+### 示例 4：@RequestParam 获取查询参数
+### 学习要点：从 URL 查询参数获取值，支持默认值
+GET http://localhost:6001/api/learn/annotations/search?keyword=Java&page=1&size=20
+
+### 示例 4-1：测试可选参数和默认值
+### 学习要点：不传 page 和 size，会使用默认值
+GET http://localhost:6001/api/learn/annotations/search?keyword=Spring
+
+### 示例 5：produces 指定响应类型
+### 学习要点：查看响应头 Content-Type: application/json
+GET http://localhost:6001/api/learn/annotations/json
+
+### ============================================
+### 第二部分：@PostMapping 注解学习
+
+### 示例 6：POST 请求基础用法
+### 学习要点：@PostMapping + @RequestParam 获取表单参数
+POST http://localhost:6001/api/learn/annotations/user
+Content-Type: application/x-www-form-urlencoded
+
+name=张三&age=25
+
+### 示例 7：@RequestBody 接收 JSON
+### 学习要点：@RequestBody 自动将 JSON 转换为 Java 对象
+POST http://localhost:6001/api/learn/annotations/user/json
+Content-Type: application/json
+
+{
+  "name": "李四",
+  "age": 30,
+  "email": "lisi@example.com"
+}
+
+### 示例 8：混合使用 @PathVariable 和 @RequestParam
+### 学习要点：同时使用路径变量和查询参数
+POST http://localhost:6001/api/learn/annotations/user/123/order?productId=456&quantity=2
+
+### ============================================
+### 第三部分：其他 HTTP 方法注解学习
+
+### 示例 9：@PutMapping 完整更新资源
+### 学习要点：PUT 请求用于完整更新资源
+PUT http://localhost:6001/api/learn/annotations/user/123
+Content-Type: application/json
+
+{
+  "name": "王五",
+  "age": 28
+}
+
+### 示例 10：@PatchMapping 部分更新资源
+### 学习要点：PATCH 请求用于部分更新资源
+PATCH http://localhost:6001/api/learn/annotations/user/123
+Content-Type: application/json
+
+{
+  "age": 30
+}
+
+### 示例 11：@DeleteMapping 删除资源
+### 学习要点：DELETE 请求用于删除资源
+DELETE http://localhost:6001/api/learn/annotations/user/123
+
+### ============================================
+### 第四部分：@RequestHeader 和 @CookieValue 学习
+
+### 示例 12：@RequestHeader 获取请求头
+### 学习要点：从请求头中获取值
+GET http://localhost:6001/api/learn/annotations/header
+Authorization: Bearer token123
+User-Agent: MyApp/1.0
+
+### 示例 13：@CookieValue 获取 Cookie
+### 学习要点：从 Cookie 中获取值
+GET http://localhost:6001/api/learn/annotations/cookie
+Cookie: sessionId=abc123; theme=dark
+
+### ============================================
+### 第五部分：ResponseEntity 和状态码学习
+
+### 示例 14：ResponseEntity 自定义响应
+### 学习要点：自定义响应头、状态码
+GET http://localhost:6001/api/learn/annotations/response
+
+### 示例 15：返回不同状态码 - 200 OK
+GET http://localhost:6001/api/learn/annotations/status/200
+
+### 示例 15-1：返回不同状态码 - 404 Not Found
+GET http://localhost:6001/api/learn/annotations/status/404
+
+### 示例 15-2：返回不同状态码 - 500 Internal Server Error
+GET http://localhost:6001/api/learn/annotations/status/500
+
+### ============================================
+### 第六部分：综合示例
+
+### 示例 16：综合使用多种注解
+### 学习要点：同时使用 @PathVariable、@RequestParam、@RequestBody、@RequestHeader
+POST http://localhost:6001/api/learn/annotations/complex/user/123?source=web
+Content-Type: application/json
+Authorization: Bearer token123
+
+{
+  "name": "综合测试",
+  "age": 25
+}
+
+### 示例 17：错误处理 - 正常情况
+### 学习要点：参数验证通过
+POST http://localhost:6001/api/learn/annotations/validate
+Content-Type: application/json
+
+{
+  "name": "测试用户",
+  "age": 25
+}
+
+### 示例 17-1：错误处理 - 姓名为空
+### 学习要点：返回 400 Bad Request
+POST http://localhost:6001/api/learn/annotations/validate
+Content-Type: application/json
+
+{
+  "name": "",
+  "age": 25
+}
+
+### 示例 17-2：错误处理 - 年龄为负数
+### 学习要点：返回 400 Bad Request
+POST http://localhost:6001/api/learn/annotations/validate
+Content-Type: application/json
+
+{
+  "name": "测试用户",
+  "age": -5
+}
+
+### 示例 18：注解速查表
+### 学习要点：查看所有注解的说明
+GET http://localhost:6001/api/learn/annotations/cheatsheet
+
