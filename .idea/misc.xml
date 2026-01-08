@@ -10,6 +10,8 @@
         <option value="$PROJECT_DIR$/kafka-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/chat-service/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/Nacos-Service-b/pom.xml" />
+        <option value="$PROJECT_DIR$/Nacos-Service-a/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

@@ -8,7 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dubbo-web" />
+        <module name="Nacos-Service-a" />
         <module name="dubbo-service" />
+        <module name="Nacos-Service-b" />
         <module name="kafka-consumer" />
         <module name="kafka-producer" />
       </profile>
@@ -30,14 +32,16 @@
           <entry name="$PROJECT_DIR$/../../../02_Module/29_Maven/repository/org/springframework/boot/spring-boot-configuration-processor/unknown/spring-boot-configuration-processor-unknown.jar" />
           <entry name="$PROJECT_DIR$/../../../02_Module/29_Maven/repository/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
+        <module name="services" />
         <module name="service-order" />
         <module name="service-product" />
-        <module name="services" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Nacos-Service-a" options="-parameters" />
+      <module name="Nacos-Service-b" options="-parameters" />
       <module name="chat-service" options="-parameters" />
       <module name="cloud-demo" options="-parameters" />
       <module name="dubbo-service" options="-parameters" />
