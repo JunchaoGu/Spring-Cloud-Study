@@ -1,6 +1,6 @@
 package com.xidian.nacosservicea.service;
 
-import com.xidian.nacosservicea.entity.Product;
+import com.xidian.entity.Product;
 import org.springframework.stereotype.Repository;
 
 /**

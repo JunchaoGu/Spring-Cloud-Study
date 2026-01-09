@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Nacos-Model-01" />
         <module name="dubbo-web" />
-        <module name="Nacos-Service-a" />
-        <module name="dubbo-service" />
-        <module name="Nacos-Service-b" />
+        <module name="nacos-service-b" />
+        <module name="nacos-service-a" />
         <module name="kafka-consumer" />
         <module name="kafka-producer" />
+        <module name="dubbo-service" />
       </profile>
       <profile name="Annotation profile for chat-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -32,11 +33,17 @@
           <entry name="$PROJECT_DIR$/../../../02_Module/29_Maven/repository/org/springframework/boot/spring-boot-configuration-processor/unknown/spring-boot-configuration-processor-unknown.jar" />
           <entry name="$PROJECT_DIR$/../../../02_Module/29_Maven/repository/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="services" />
         <module name="service-order" />
         <module name="service-product" />
+        <module name="services" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Model" target="1.8" />
+      <module name="model" target="17" />
+      <module name="Nacos-Service-a" target="17" />
+      <module name="Nacos-Service-b" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -48,6 +55,8 @@
       <module name="dubbo-web" options="-parameters" />
       <module name="kafka-consumer" options="-parameters" />
       <module name="kafka-producer" options="-parameters" />
+      <module name="nacos-service-a" options="-parameters" />
+      <module name="nacos-service-b" options="-parameters" />
       <module name="service-order" options="-parameters" />
       <module name="service-product" options="-parameters" />
       <module name="services" options="-parameters" />
