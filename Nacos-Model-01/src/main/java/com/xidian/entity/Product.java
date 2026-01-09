@@ -1,4 +1,4 @@
-package com.xidian.nacosservicea.entity;
+package com.xidian.product.entity;
 
 import lombok.Data;
 
