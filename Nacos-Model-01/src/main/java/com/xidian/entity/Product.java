@@ -1,4 +1,4 @@
-package com.xidian.product.entity;
+package com.xidian.entity;
 
 import lombok.Data;
 
