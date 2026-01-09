@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Nacos-Model-01/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Nacos-Model-01/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Nacos-Service-a/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Nacos-Service-b/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/chat-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/cloud-demo/services/service-order/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/cloud-demo/services/service-product/src/main/java" charset="UTF-8" />
@@ -11,5 +15,7 @@
     <file url="file://$PROJECT_DIR$/dubbo-web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-producer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/model/src/main/resources" charset="UTF-8" />
   </component>
 </project>
