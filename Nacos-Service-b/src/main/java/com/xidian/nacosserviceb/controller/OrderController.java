@@ -1,7 +1,10 @@
 package com.xidian.nacosserviceb.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xidian.entity.Order;
+import com.xidian.entity.Product;
+import com.xidian.nacosserviceb.feign.ProductOpenFeign;
 import com.xidian.nacosserviceb.properties.NacosBatchProperties;
 import com.xidian.nacosserviceb.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -123,13 +127,25 @@ public class OrderController {
         );
     }
 
+//    TODO 采用OpenFeign请求
+    @Autowired
+    ProductOpenFeign productOpenFeign;
+    @GetMapping("/feign/{id}")
+    public String feignGetProduct(@PathVariable Long id) throws JsonProcessingException {
+
+        Product product = productOpenFeign.getProduct(id);
+
+        return objectMapper.writeValueAsString(product);
+    }
+
+
     @Value("${order.timeout}")
     String timeout;
 
     @Value("${order.auto-confirm}")
     String autoConfirm;
 
-    @GetMapping("/getConfig")
+    @GetMapping("/getConfig1")
     public String getConfig() {
         return timeout + " " + autoConfirm;
     }

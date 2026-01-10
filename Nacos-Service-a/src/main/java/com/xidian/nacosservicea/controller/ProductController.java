@@ -32,13 +32,12 @@ public class ProductController {
     DiscoveryClient discoveryClient;
 
     @GetMapping("/product/{id}")
-    public String getProduct(@PathVariable Long id) throws JsonProcessingException {
+    public Product getProduct(@PathVariable Long id) throws JsonProcessingException {
 
         Product product = productService.getProductById(id);
 
-        String result = objectMapper.writeValueAsString(product);
 
-        return result;
+        return product;
 
     }
 
@@ -55,8 +54,6 @@ public class ProductController {
         int port = serviceInstance.getPort();
         String host = serviceInstance.getHost();
         String url = "http://"+host+ ":"+port;
-
-
 
         return null;
 

@@ -44,6 +44,13 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
+<!--        导入feign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
         <!-- Spring Boot Actuator（可选但推荐） -->
         <!-- 作用：提供健康检查端点，Nacos通过它判断服务实例是否健康 -->
         <dependency>
