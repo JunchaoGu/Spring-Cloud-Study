@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>nacos-service-b</artifactId>
+    <artifactId>nacos-service-a</artifactId>
     <version>1.0.0</version>
-    <name>Nacos-Service-b</name>
-    <description>Nacos服务注册示例 - Service B</description>
+    <name>Nacos-Service-a</name>
+    <description>Nacos服务注册示例 - Service A</description>
 
     <properties>
         <java.version>17</java.version>
@@ -50,7 +50,11 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-
+<!--        导入sentinel-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
         <!-- Spring Boot Actuator（可选但推荐） -->
         <!-- 作用：提供健康检查端点，Nacos通过它判断服务实例是否健康 -->
         <dependency>
