@@ -14,6 +14,7 @@
         <module name="kafka-consumer" />
         <module name="kafka-producer" />
         <module name="dubbo-service" />
+        <module name="demo" />
       </profile>
       <profile name="Annotation profile for chat-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -39,6 +40,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Cloud-Gateway" target="1.8" />
+      <module name="gateway" target="17" />
       <module name="Model" target="1.8" />
       <module name="model" target="17" />
       <module name="Nacos-Service-a" target="17" />
@@ -51,8 +54,10 @@
       <module name="Nacos-Service-b" options="-parameters" />
       <module name="chat-service" options="-parameters" />
       <module name="cloud-demo" options="-parameters" />
+      <module name="demo" options="-parameters" />
       <module name="dubbo-service" options="-parameters" />
       <module name="dubbo-web" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="kafka-consumer" options="-parameters" />
       <module name="kafka-producer" options="-parameters" />
       <module name="nacos-service-a" options="-parameters" />

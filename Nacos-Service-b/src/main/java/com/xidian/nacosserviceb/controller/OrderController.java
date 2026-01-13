@@ -1,5 +1,6 @@
 package com.xidian.nacosserviceb.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xidian.entity.Order;
@@ -92,13 +93,6 @@ public class OrderController {
         return forObject;
     }
 
-
-
-
-
-
-
-
     @GetMapping("/choose/balancer")
     public String testBalancer(){
 
@@ -130,6 +124,8 @@ public class OrderController {
 //    TODO 采用OpenFeign请求
     @Autowired
     ProductOpenFeign productOpenFeign;
+
+    @SentinelResource(value = "createOrder",blockHandler = "MyblockHandler")
     @GetMapping("/feign/{id}")
     public String feignGetProduct(@PathVariable Long id) throws JsonProcessingException {
 
@@ -137,6 +133,29 @@ public class OrderController {
 
         return objectMapper.writeValueAsString(product);
     }
+    public String MyblockHandler(Long id) throws JsonProcessingException {
+        return objectMapper.writeValueAsString("你报错了");
+    }
+
+
+    @SentinelResource(value = "findObjById")
+    @GetMapping("/searchById1/{id}")
+    public String bugById(@PathVariable Long id) throws JsonProcessingException {
+
+        Product product = productOpenFeign.getProduct(id);
+
+        return objectMapper.writeValueAsString(product);
+    }
+
+    @SentinelResource(value = "findObjById")
+    @GetMapping("/searchById2/{id}")
+    public String skillById(@PathVariable Long id) throws JsonProcessingException {
+
+        Product product = productOpenFeign.getProduct(id);
+
+        return objectMapper.writeValueAsString(product);
+    }
+
 
 
     @Value("${order.timeout}")
@@ -160,9 +179,17 @@ public class OrderController {
 
 
 
+    @GetMapping("/readDb")
+    public String readDb() {
+        return nacosBatchProperties.getTimeOut() + "    " + nacosBatchProperties.getAutoConfirm();
+    }
+
+
+    @GetMapping("/writeDb")
+    public String writeDb() {
+        return nacosBatchProperties.getTimeOut() + "    " + nacosBatchProperties.getAutoConfirm();
+    }
+
 
 
 }
-
-
-
